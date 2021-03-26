@@ -3,12 +3,14 @@ package lab1.servlet;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import lab1.*;
-import lab1.model.*;
+import lab1.model.FuelType;
+import lab1.model.ValidatedVehicle;
+import lab1.model.Vehicle;
+import lab1.model.VehicleType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,7 +40,7 @@ public class CrudServlet extends HttpServlet {
     private void doFindById(long id, HttpServletResponse resp) throws IOException {
         Vehicle vehicle = EntityManagerProvider.provide().find(Vehicle.class, id);
         if (vehicle != null) {
-            resp.getWriter().write(gson.toJson(vehicle));
+            ServletHelper.setResult(resp, vehicle, gson);
         } else {
             ServletHelper.setNotFound(resp, "Vehicle with id " + id + " not found");
         }
@@ -63,7 +65,8 @@ public class CrudServlet extends HttpServlet {
                     .addEnumFilter(FuelType.values(), "fuel_type")
                     .build();
         } catch (InvalidFilterException e) {
-            ServletHelper.setBadRequest(resp, e.getMessage());
+            ServletHelper.setBadRequest(resp, "Invalid '" + e.getFilteredColumn()
+                    + "' filter value : " + e.getInvalidFilterValue());
             return;
         }
         query.where(filter);
@@ -137,7 +140,7 @@ public class CrudServlet extends HttpServlet {
             typedQuery.setFirstResult((page - 1) * pageSize).setMaxResults(pageSize);
         }
         List<Vehicle> result = typedQuery.getResultList();
-        resp.getWriter().write(gson.toJson(result));
+        ServletHelper.setResult(resp, result, gson);
     }
 
     @Override
@@ -193,7 +196,7 @@ public class CrudServlet extends HttpServlet {
     }
 
     @Override
-    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Vehicle vehicle;
         try {
             vehicle = gson.fromJson(ServletHelper.getBody(req), Vehicle.class);
@@ -209,11 +212,20 @@ public class CrudServlet extends HttpServlet {
             return;
         }
 
+        String idValue = req.getParameter("id");
+        long id;
+        try {
+            id = Long.parseLong(idValue);
+        } catch (NumberFormatException e) {
+            ServletHelper.setBadRequest(resp, "Invalid id: " + idValue);
+            return;
+        }
+
         EntityManager entityManager = EntityManagerProvider.provide();
         entityManager.getTransaction().begin();
-        Vehicle storedVehicle = entityManager.find(Vehicle.class, vehicle.getId());
+        Vehicle storedVehicle = entityManager.find(Vehicle.class, id);
         if (storedVehicle == null) {
-            ServletHelper.setNotFound(resp, "Vehicle with id " + vehicle.getId() + " not found");
+            ServletHelper.setNotFound(resp, "Vehicle with id " + id + " not found");
             entityManager.getTransaction().rollback();
             return;
         }
@@ -222,7 +234,7 @@ public class CrudServlet extends HttpServlet {
     }
 
     @Override
-    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String idValue = req.getParameter("id");
         long id;
         try {

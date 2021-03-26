@@ -44,7 +44,7 @@ public class FilterBuilder {
         if (paramMap.containsKey(paramName)) {
             String value = paramMap.get(paramName)[0];
             if (value.isEmpty()) {
-                throw new InvalidFilterException();
+                throw new InvalidFilterException(columnName, value);
             }
             addPredicate(columnName, value);
         }
@@ -62,7 +62,7 @@ public class FilterBuilder {
                 int intValue = Integer.parseInt(value);
                 addPredicate(columnName, intValue);
             } catch (NumberFormatException e) {
-                throw new InvalidFilterException();
+                throw new InvalidFilterException(columnName, value);
             }
         }
         return this;
@@ -75,7 +75,7 @@ public class FilterBuilder {
                 long longValue = Long.parseLong(value);
                 addPredicate(columnName, longValue);
             } catch (NumberFormatException e) {
-                throw new InvalidFilterException();
+                throw new InvalidFilterException(columnName, value);
             }
         }
         return this;
@@ -88,7 +88,7 @@ public class FilterBuilder {
                 float floatValue = Float.parseFloat(value);
                 addPredicate(columnName, floatValue);
             } catch (NumberFormatException e) {
-                throw new InvalidFilterException();
+                throw new InvalidFilterException(columnName, value);
             }
         }
         return this;
@@ -100,7 +100,7 @@ public class FilterBuilder {
             try {
                 long dateValue = Long.parseLong(value);
                 if (dateValue < 0) {
-                    throw new InvalidFilterException();
+                    throw new InvalidFilterException(columnName, value);
                 }
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(new Date(dateValue));
@@ -108,7 +108,7 @@ public class FilterBuilder {
                         calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
                 addPredicate(columnName, LocalDateTime.of(filter, LocalTime.MIDNIGHT));
             } catch (NumberFormatException e) {
-                throw new InvalidFilterException();
+                throw new InvalidFilterException(columnName, value);
             }
         }
         return this;
@@ -123,7 +123,7 @@ public class FilterBuilder {
                     return this;
                 }
             }
-            throw new InvalidFilterException();
+            throw new InvalidFilterException(columnName, value);
         }
         return this;
     }

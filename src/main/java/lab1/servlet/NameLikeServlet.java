@@ -27,6 +27,6 @@ public class NameLikeServlet extends HttpServlet {
                 .createNamedQuery("nameLike", Vehicle.class)
                 .setParameter("value", value)
                 .getResultList();
-        resp.getWriter().write(gson.toJson(result));
+        ServletHelper.setResult(resp, result, gson);
     }
 }
