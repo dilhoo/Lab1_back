@@ -11,13 +11,10 @@ repositories {
 }
 
 dependencies {
-    providedCompile "javax.servlet:javax.servlet-api:3.1.0"
+    providedCompile "org.jboss.resteasy:resteasy-jaxrs:3.12.1.Final"
+    providedCompile "javax:javaee-api:8.0"
 
     compile "org.eclipse.persistence:eclipselink:2.7.7"
-
-    runtimeOnly "org.postgresql:postgresql:42.2.18"
-
-    compile 'com.google.code.gson:gson:2.8.6'
 }
 
 war {

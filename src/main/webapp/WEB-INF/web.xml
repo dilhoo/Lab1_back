@@ -1,38 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
-    <display-name>lab1</display-name>
-
-    <servlet>
-        <servlet-name>crud</servlet-name>
-        <servlet-class>lab1.servlet.CrudServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>averageFuelConsumption</servlet-name>
-        <servlet-class>lab1.servlet.AverageFuelConsumptionServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>nameLike</servlet-name>
-        <servlet-class>lab1.servlet.NameLikeServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>enginePowerToCount</servlet-name>
-        <servlet-class>lab1.servlet.EnginePowerToCountServlet</servlet-class>
-    </servlet>
-
-    <servlet-mapping>
-        <servlet-name>crud</servlet-name>
-        <url-pattern>/*</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>averageFuelConsumption</servlet-name>
-        <url-pattern>/average_fuel_consumption</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>nameLike</servlet-name>
-        <url-pattern>/name_like</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>enginePowerToCount</servlet-name>
-        <url-pattern>/engine_power_to_count</url-pattern>
-    </servlet-mapping>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.0">
 </web-app>

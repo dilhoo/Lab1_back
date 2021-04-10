@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
-    <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="default" transaction-type="JTA">
+
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+
+        <jta-data-source>java:/PostgresDS</jta-data-source>
 
         <class>lab1.model.Vehicle</class>
         <class>lab1.model.Coordinates</class>
 
         <properties>
-            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver" />
-            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://pg:5432/studs" />
-            <property name="javax.persistence.jdbc.user" value="s225149"/>
-
             <property name="eclipselink.ddl-generation" value="create-tables"/>
         </properties>
     </persistence-unit>

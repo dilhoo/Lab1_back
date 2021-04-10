@@ -1,3 +1,8 @@
 build/
 .gradle/
 .idea/vcs.xml
+create
+update
+delete
+data.json
+result.html
